@@ -28,5 +28,13 @@ export class AuthService {
     }
   }
 
-
+  login(userData: User): boolean {
+    let users = this.getUsers();
+    const user = users.find(u => u.username === userData.username && u.password === userData.password);
+    if (user) {
+      return true;
+    }
+    return false;
+  }
 }
+

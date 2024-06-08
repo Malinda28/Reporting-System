@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-registration',
@@ -11,7 +12,7 @@ export class UserRegistrationComponent {
   registrationForm!: FormGroup;
   isSubmitAttempt: boolean = false;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
 
   }
 
@@ -27,7 +28,10 @@ export class UserRegistrationComponent {
   onSubmit() {
     this.isSubmitAttempt = true;
     if (this.registrationForm.valid) {
-      this.authService.registerUser(this.registrationForm.value);
+      const res = this.authService.registerUser(this.registrationForm.value);
+      if (res) {
+        this.router.navigate(['auth/login']);
+      }
     } else {
       // Handle form validation errors
     }

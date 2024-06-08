@@ -1,7 +1,11 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/auth/login/login.component';
-import { UserRegistrationComponent } from './features/auth/user-registration/user-registration.component';
+import { MainLayoutComponent } from './shared/components/main-layout/main-layout.component';
 
 export const routes: Routes = [
-    { path: '', loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule) }
+    { path: 'auth', loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule) },
+    {
+        path: '',
+        component: MainLayoutComponent,
+        loadChildren: () => import('./features/report/report.module').then(m => m.ReportModule)
+    }
 ];

@@ -16,7 +16,6 @@ export class StateService {
 
   setUser(user: User) {
     this.userState.next(user);
-
-   console.log(this.userState.getValue()) ;
+    console.log(this.userState.getValue()) ;
   }
 }
