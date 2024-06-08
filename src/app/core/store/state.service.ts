@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { User } from '../../shared/models/user.model';
 
 @Injectable({
@@ -16,6 +16,16 @@ export class StateService {
 
   setUser(user: User) {
     this.userState.next(user);
-    console.log(this.userState.getValue()) ;
+    console.log(this.userState.getValue());
+  }
+
+  checkUserState() {
+    console.log(this.userState.getValue().name);
+    const isLoggedIn = !!this.userState.getValue().name;
+    return of(isLoggedIn);
+  }
+
+  get currentUser() {
+   return this.userState.getValue();
   }
 }

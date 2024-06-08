@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../../core/auth.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -11,7 +12,13 @@ import { RouterModule } from '@angular/router';
 export class MainLayoutComponent {
 
   name!: string;
-  onClickLogout() {
 
+  constructor(private authService: AuthService, private router: Router) {
+
+  }
+  onClickLogout() {
+    if (this.authService.logout()) {
+      this.router.navigate(['auth/login'])
+    }
   }
 }

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { User } from '../shared/models/user.model';
-import { BehaviorSubject } from 'rxjs';
 import { StateService } from './store/state.service';
 
 @Injectable()
@@ -32,9 +31,15 @@ export class AuthService {
     let users = this.getUsers();
     const user = users.find(u => u.username === userData.username && u.password === userData.password);
     if (user) {
+      this.state.setUser(user);
       return true;
     }
     return false;
+  }
+
+  logout() {
+    this.state.setUser({} as User);
+    return true;
   }
 }
 
