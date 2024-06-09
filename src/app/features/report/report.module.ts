@@ -7,6 +7,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CalendarModule } from 'primeng/calendar';
 import { SummaryBarChartComponent } from './activity-report/summary-bar-chart/summary-bar-chart.component';
+import {TableModule} from 'primeng/table';
 @NgModule({
   declarations: [
     ActivityReportComponent,
@@ -19,6 +20,7 @@ import { SummaryBarChartComponent } from './activity-report/summary-bar-chart/su
     DropdownModule,
     MultiSelectModule,
     CalendarModule,
+    TableModule
   ],
 })
 export class ReportModule { }
