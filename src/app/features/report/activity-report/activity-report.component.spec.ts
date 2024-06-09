@@ -10,7 +10,7 @@ describe('ActivityReportComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ActivityReportComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ActivityReportComponent);
     component = fixture.componentInstance;

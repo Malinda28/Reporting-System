@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { User } from '../shared/models/user.model';
 import { StateService } from './store/state.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
 
   private storageKey = 'users';
