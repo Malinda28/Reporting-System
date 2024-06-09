@@ -1,4 +1,30 @@
 <div class="card">
-<p>summary-bar-chart works!</p>
+    <div class="chart">
+
+        <ng-container *ngIf="selectedClass">
+            <div class="text-center">
+                Overall results of {{selectedClass}}
+                <span *ngIf="startDate && endDate">for the Period
+                    <br />{{startDate|date}} - {{endDate|date}}</span>
+            </div>
+        </ng-container>
+        <ng-container>
+            <ngx-charts-bar-horizontal-stacked [view]="[1000,50]" [scheme]="colorScheme" [results]="chartData">
+            </ngx-charts-bar-horizontal-stacked>
+        </ng-container>
+
+    </div>
+
+    <div class="legend-wrap">
+        <ul class="legend-labels horizontal-legend">
+            <li class="legend-label" *ngFor="let level of chartData[0]?.series">
+                <div class="legend-item">
+                    <span class="legend-label-color " [ngClass]="level.styleClass"></span>
+                    <span class="legend-label-text"> {{level.name}} ({{level.value}}%)</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
 
 </div>

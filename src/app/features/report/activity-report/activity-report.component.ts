@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ReportService } from '../../../core/report.service';
 import { ClassModel } from '../../../shared/models/class.model';
 import { FlattenedActivity } from '../../../shared/models/activity.model';
-import moment from 'moment';
 import { debounceTime } from 'rxjs';
 
 @Component({
@@ -17,6 +16,7 @@ export class ActivityReportComponent implements OnInit {
   activities!: FlattenedActivity[];
   filterForm: FormGroup;
   tableData!: FlattenedActivity[];
+
   constructor(private report: ReportService) {
     this.filterForm = new FormGroup({
       selectedClass: new FormControl(''),
@@ -26,20 +26,32 @@ export class ActivityReportComponent implements OnInit {
     });
   }
 
+  get filterFormValue() {
+    return this.filterForm.value;
+  }
+
+  get selectedStudents() {
+    return this.filterForm.value.selectedStudents;
+  }
+
+  get startDate() {
+    return this.filterForm.value.startDate;
+  }
+  get endDate() {
+    return this.filterForm.value.endDate;
+  }
   ngOnInit() {
     this.getStudents();
     this.getActivities();
 
     this.filterForm.valueChanges.pipe(
-      debounceTime(1000)
+      debounceTime(300)
     ).subscribe(value => {
       if (value.selectedClass) {
         this.students = value.selectedClass.students;
       }
       const students = (value.selectedStudents?.length) ? value.selectedStudents : value.selectedClass.students;
       this.tableData = this.filterActivities(this.activities, students, value.startDate, value.endDate);
-      console.log(this.tableData);
-
     });
 
   }
@@ -47,6 +59,7 @@ export class ActivityReportComponent implements OnInit {
   async getStudents() {
     this.classes = await this.report.fetchClassData();
     this.students = Array.from(new Set(this.classes.flatMap(cls => cls.students)));
+    this.students.push('malinda')
   }
 
   async getActivities() {
@@ -60,6 +73,10 @@ export class ActivityReportComponent implements OnInit {
       this.students = selectedClass.students;
       this.filterForm.controls['selectedStudents'].reset();
     }
+  }
+
+  onClearStudents() {
+    this.filterForm.controls['selectedStudents'].reset();
   }
 
   filterActivities(activities: FlattenedActivity[], students?: string[], startDate?: Date, endDate?: Date): FlattenedActivity[] {
@@ -81,6 +98,7 @@ export class ActivityReportComponent implements OnInit {
       return includeActivity;
     });
   }
+
 
 }
 

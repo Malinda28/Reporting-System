@@ -1,5 +1,10 @@
 // Import Bootstrap functions and variables
 $primary: #ff6000;
+$dark: #102837;
+$excellent-color: #6DCE01;
+$good-color: #FFCE00;
+$ok-color: #FF6100;
+$weak-color: #FF3933;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
@@ -24,9 +29,6 @@ $primary: #ff6000;
     }
 }
 
-
-
-
 .main-container {
     margin-top: 175px;
 }
@@ -35,4 +37,57 @@ $primary: #ff6000;
     .card {
         padding: 10px;
     }
+
+    .p-multiselect-close {
+        display: none;
+    }
+}
+
+.ngx-charts-outer {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.chart {
+    .chart-legend {
+        display: block;
+
+        .legend-labels {
+            max-height: 50px !important;
+        }
+    }
+}
+
+
+
+.bg-excellent {
+    background-color: $excellent-color;
+}
+
+.bg-good {
+    background-color: $good-color;
+}
+
+.bg-ok {
+    background-color: $ok-color;
+}
+
+.bg-weak {
+    background-color: $weak-color;
+}
+
+.text-excellent {
+    color: $excellent-color;
+}
+
+.text-good {
+    color: $good-color;
+}
+
+.text-ok {
+    color: $ok-color;
+}
+
+.text-weak {
+    color: $weak-color;
 }

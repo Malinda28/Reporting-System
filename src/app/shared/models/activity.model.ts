@@ -24,3 +24,13 @@ export interface FlattenedActivity {
     week: Date;
     value: number;
 }
+
+export interface ChartData {
+    name:   string;
+    series: Series[];
+}
+
+export class Series {
+    name!:  string;
+    value!: number;
+}

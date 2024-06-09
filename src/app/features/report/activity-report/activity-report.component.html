@@ -1,7 +1,5 @@
 <div class="activity-report-container px-5">
-
-
-    <div class="card">
+    <div class="card mb-3">
         <form [formGroup]="filterForm">
             <p-dropdown [options]="classes" formControlName="selectedClass" optionLabel="name"
                 placeholder="Select classes" (onChange)="onChangeClass($event.value.id)"></p-dropdown>
@@ -13,34 +11,56 @@
                 placeholder="Select end date"></p-calendar>
         </form>
     </div>
-    <app-summary-bar-chart></app-summary-bar-chart>
+    <ng-container *ngIf="tableData?.length; else onActivities">
+        <app-summary-bar-chart [data]="tableData" [filterFormValue]="filterFormValue"></app-summary-bar-chart>
 
-    <div class="data-table">
+        <div class="data-table my-3">
 
-        <p-table [value]="tableData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-            responsiveLayout="scroll" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [rowsPerPageOptions]="[10,25,50]">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th pSortableColumn="content">Content<p-sortIcon field="content"></p-sortIcon></th>
-                    <th>Type</th>
-                    <th>Skill</th>
-                    <th>Date Completed</th>
-                    <th>Duration</th>
-                    <th>Result</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-data>
-                <tr>
-                    <td>{{data.content}}</td>
-                    <td>{{data.skill}}</td>
-                    <td>{{data.type}}</td>
-                    <td>{{data.week | date:'yyyy/MM/dd'}}</td>
-                    <td>{{data.duration}}</td>
-                    <td>{{data.value}}</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
+            <p-table [value]="tableData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                responsiveLayout="scroll"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10,25,50]">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="content">Content<p-sortIcon field="content"></p-sortIcon></th>
+                        <th>Type</th>
+                        <th pSortableColumn="skill">Skill<p-sortIcon field="skill"></p-sortIcon></th>
+                        <th>Date Completed</th>
+                        <th>Duration</th>
+                        <th pSortableColumn="value">Result<p-sortIcon field="value"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-data>
+                    <tr>
+                        <td>{{data.content}}</td>
+                        <td>{{data.type}}</td>
+                        <td>{{data.skill}}</td>
+                        <td>{{data.week | date:'yyyy/MM/dd'}}</td>
+                        <td>{{data.duration}}</td>
+                        <td>
+                            <span [ngClass]="{
+                            'text-excellent': data.value >= 90,
+                            'text-good': data.value >= 80 && data.value < 90,
+                            'text-ok': data.value >= 60 && data.value < 80,
+                            'text-weak': data.value < 60 }">{{data.value }}%</span>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </ng-container>
+    <ng-template #onActivities>
+        <div *ngIf="selectedStudents?.length" class="card text-center">
+            <div *ngFor="let student of selectedStudents">
+                <div>
+                    <span>{{student}} <span *ngIf="startDate && endDate"> from {{startDate|date}} to {{endDate|date}}
+                        </span></span>
+                </div>
+                <span>
+                    has no activities
+                </span>
+            </div>
+        </div>
+
+    </ng-template>
 </div>
-
