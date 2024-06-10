@@ -1,7 +1,149 @@
-/* You can add global styles to this file, and also import other style files */
+// Import Bootstrap functions and variables
+$primary: #ff6000;
+$dark: #102837;
+$light-gray: #a6a6a6;
+$excellent-color: #6DCE01;
+$good-color: #FFCE00;
+$ok-color: #FF6100;
+$weak-color: #FF3933;
 
-.auth-container{
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    color: $white;
+}
+
+.p-calendar .p-button,
+.p-button:enabled:hover {
+    background: $white;
+    border: 1px solid $light-gray;
+    color: #333333;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: $primary;
+    border-color: $primary;
+}
+
+.data-table {
+
+    thead{
+        border: 1px solid $light-gray;
+
+    }
+    .p-datatable .p-datatable-tbody>tr {
+        border: 1px solid $light-gray;
+    }
+
+    .p-datatable .p-datatable-thead > tr > th{
+        border-left: none;
+        border-right: none;
+    }
+
+    .p-datatable .p-datatable-tbody>tr>td {
+        border: none
+    }
+
+}
+
+.auth-container {
     display: flex;
     height: 100vh;
     padding: 20px;
+
+    .card {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+    }
+
+    .p-message .p-message-wrapper {
+        padding: 10px;
+        font-size: 14px;
+
+        .p-message-close {
+            display: none;
+        }
+
+
+    }
+
+
+}
+
+.main-container {
+    margin-top: 175px;
+}
+
+.activity-report-container {
+    .card {
+        padding: 10px;
+    }
+
+    .p-multiselect-close {
+        display: none;
+    }
+}
+
+.ngx-charts-outer {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.chart {
+    .chart-legend {
+        display: block;
+
+        .legend-labels {
+            max-height: 50px !important;
+        }
+    }
+}
+
+
+
+.bg-excellent {
+    background-color: $excellent-color;
+}
+
+.bg-good {
+    background-color: $good-color;
+}
+
+.bg-ok {
+    background-color: $ok-color;
+}
+
+.bg-weak {
+    background-color: $weak-color;
+}
+
+.text-excellent {
+    color: $excellent-color;
+}
+
+.text-good {
+    color: $good-color;
+}
+
+.text-ok {
+    color: $ok-color;
+}
+
+.text-weak {
+    color: $weak-color;
+}
+
+
+.filter-contol {
+
+    .p-dropdown,
+    .p-multiselect,
+    .p-calendar {
+        width: 250px;
+    }
 }

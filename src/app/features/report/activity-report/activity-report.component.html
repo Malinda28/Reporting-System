@@ -1,0 +1,81 @@
+<div class="activity-report-container px-5">
+    <div class="card mb-3">
+        <form [formGroup]="filterForm">
+            <div class="filer-section d-flex justify-content-around">
+                <div class="filter-contol">
+                   <div>Class</div>
+                    <p-dropdown [options]="classes" formControlName="selectedClass" optionLabel="name"
+                        placeholder="Select classes" (onChange)="onChangeClass($event.value.id)"></p-dropdown>
+                </div>
+                <div class="filter-contol">
+                   <div>Students</div>
+                   <p-multiSelect [options]="students" formControlName="selectedStudents"
+                        placeholder="Select students"></p-multiSelect>
+                </div>
+                <div class="filter-contol"> 
+                   <div>Date Range</div>
+                    <p-calendar formControlName="startDate" [showIcon]="true" inputId="icon" 
+                        placeholder="Select start date"></p-calendar>
+                </div>
+                <div class="filter-contol">
+                    <div>&nbsp;</div>
+                    <p-calendar formControlName="endDate" [showIcon]="true" inputId="icon"
+                        placeholder="Select end date"></p-calendar>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <ng-container *ngIf="tableData?.length; else onActivities">
+        <app-summary-bar-chart [data]="tableData" [filterFormValue]="filterFormValue"></app-summary-bar-chart>
+
+        <div class="data-table my-3">
+
+            <p-table [value]="tableData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                responsiveLayout="scroll"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10,25,50]">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="content">Content<p-sortIcon field="content"></p-sortIcon></th>
+                        <th>Type</th>
+                        <th pSortableColumn="skill">Skill<p-sortIcon field="skill"></p-sortIcon></th>
+                        <th>Date Completed</th>
+                        <th>Duration</th>
+                        <th pSortableColumn="value">Result<p-sortIcon field="value"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-data>
+                    <tr>
+                        <td>{{data.content}}</td>
+                        <td>{{data.type}}</td>
+                        <td>{{data.skill}}</td>
+                        <td>{{data.week | date:'yyyy/MM/dd'}}</td>
+                        <td>{{data.duration}}</td>
+                        <td>
+                            <span [ngClass]="{
+                            'text-excellent': data.value >= 90,
+                            'text-good': data.value >= 80 && data.value < 90,
+                            'text-ok': data.value >= 60 && data.value < 80,
+                            'text-weak': data.value < 60 }">{{data.value }}%</span>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </ng-container>
+    <ng-template #onActivities>
+        <div *ngIf="listingStudents?.length" class="card text-center">
+            <div *ngFor="let student of listingStudents">
+                <div>
+                    <span>{{student}} <span *ngIf="startDate && endDate"> from {{startDate|date}} to
+                            {{endDate|date}}</span></span>
+                </div>
+            </div>
+            <span>
+                 no activities
+            </span>
+        </div>
+
+    </ng-template>
+</div>

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/auth.service';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { passwordMatchValidator, passwordStrengthValidator } from '../../../shared/validation.functions';
 
 @Component({
   selector: 'app-user-registration',
@@ -11,33 +14,29 @@ export class UserRegistrationComponent {
   registrationForm!: FormGroup;
   isSubmitAttempt: boolean = false;
 
-  constructor(private authService: AuthService) {
-
-  }
+  constructor(private authService: AuthService, private router: Router, private messageService: MessageService) { }
 
   ngOnInit() {
     this.registrationForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.email]),
       name: new FormControl('', [Validators.required]),
-      password: new FormControl('', Validators.required),
+      password: new FormControl('', [Validators.required, passwordStrengthValidator()]),
       confirmPassword: new FormControl('', [Validators.required])
-    }, { validators: this.passwordMatchValidator });
+    },{ validators: passwordMatchValidator });
   }
 
   onSubmit() {
     this.isSubmitAttempt = true;
     if (this.registrationForm.valid) {
-      this.authService.registerUser(this.registrationForm.value);
-    } else {
-      // Handle form validation errors
+      const res = this.authService.registerUser(this.registrationForm.value);
+      if (res) {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registered successfully!' });
+        this.router.navigate(['auth/login']);
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Oops', detail: 'Already in the system!' });
+      }
     }
   }
-
-  passwordMatchValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
-    const password = formGroup.get('password')?.value;
-    const confirmPassword = formGroup.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
-  };// need to move 
 
   get usernameControl() {
     return this.registrationForm.controls['username'];
@@ -56,8 +55,8 @@ export class UserRegistrationComponent {
   }
 
   get usernameValidation() {
-    if (this.usernameControl.errors && (this.usernameControl.touched || this.isSubmitAttempt)) {
-      if (this.usernameControl.errors['email']) {
+    if (this.usernameControl?.errors && (this.usernameControl.touched || this.isSubmitAttempt)) {
+      if (this.usernameControl?.errors['email']) {
         return 'Please enter a valid email'
       }
       return 'Username is required';
@@ -66,26 +65,26 @@ export class UserRegistrationComponent {
   }
 
   get nameValidation() {
-    if (this.name.errors && (this.name.touched || this.isSubmitAttempt)) {
+    if (this.name?.errors && (this.name.touched || this.isSubmitAttempt)) {
       return 'Name is required';
     }
     return null;
   }
 
   get passwordValidation() {
-    if (this.passwordControl.errors && (this.passwordControl.touched || this.isSubmitAttempt)) {
-      // if (this.passwordControl.errors['password']) {
-      //   return 'Please enter a valid email'
-      // }
+    if (this.passwordControl?.errors && (this.passwordControl.touched || this.isSubmitAttempt)) {
+      if (this.passwordControl?.errors['weak']) {
+        return 'Please enter a strong password'
+      }
       return 'Password is required';
     }
     return null;
   }
 
   get confirmPasswordValidation() {
-    if (this.confirmPasswordControl.errors && (this.confirmPasswordControl.touched || this.isSubmitAttempt)) {
+    if (this.confirmPasswordControl?.errors && (this.confirmPasswordControl.touched || this.isSubmitAttempt)) {
       return 'Confirm password is required';
-    } else if (this.registrationForm.errors?.['mismatch'] && this.confirmPasswordControl.touched) {
+    } else if (this.registrationForm?.errors?.['mismatch'] && this.confirmPasswordControl.touched) {
       return 'Passwords do not match';
     }
     return null;
