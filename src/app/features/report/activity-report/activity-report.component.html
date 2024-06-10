@@ -1,14 +1,29 @@
 <div class="activity-report-container px-5">
     <div class="card mb-3">
         <form [formGroup]="filterForm">
-            <p-dropdown [options]="classes" formControlName="selectedClass" optionLabel="name"
-                placeholder="Select classes" (onChange)="onChangeClass($event.value.id)"></p-dropdown>
-            <p-multiSelect [options]="students" formControlName="selectedStudents"
-                placeholder="Select students"></p-multiSelect>
-            <p-calendar formControlName="startDate" [showIcon]="true" inputId="icon"
-                placeholder="Select start date"></p-calendar>
-            <p-calendar formControlName="endDate" [showIcon]="true" inputId="icon"
-                placeholder="Select end date"></p-calendar>
+            <div class="filer-section d-flex justify-content-around">
+                <div class="filter-contol">
+                   <div>Class</div>
+                    <p-dropdown [options]="classes" formControlName="selectedClass" optionLabel="name"
+                        placeholder="Select classes" (onChange)="onChangeClass($event.value.id)"></p-dropdown>
+                </div>
+                <div class="filter-contol">
+                   <div>Students</div>
+                   <p-multiSelect [options]="students" formControlName="selectedStudents"
+                        placeholder="Select students"></p-multiSelect>
+                </div>
+                <div class="filter-contol"> 
+                   <div>Date Range</div>
+                    <p-calendar formControlName="startDate" [showIcon]="true" inputId="icon" 
+                        placeholder="Select start date"></p-calendar>
+                </div>
+                <div class="filter-contol">
+                    <div>&nbsp;</div>
+                    <p-calendar formControlName="endDate" [showIcon]="true" inputId="icon"
+                        placeholder="Select end date"></p-calendar>
+                </div>
+            </div>
+
         </form>
     </div>
     <ng-container *ngIf="tableData?.length; else onActivities">
@@ -50,16 +65,16 @@
         </div>
     </ng-container>
     <ng-template #onActivities>
-        <div *ngIf="selectedStudents?.length" class="card text-center">
-            <div *ngFor="let student of selectedStudents">
+        <div *ngIf="listingStudents?.length" class="card text-center">
+            <div *ngFor="let student of listingStudents">
                 <div>
-                    <span>{{student}} <span *ngIf="startDate && endDate"> from {{startDate|date}} to {{endDate|date}}
-                        </span></span>
+                    <span>{{student}} <span *ngIf="startDate && endDate"> from {{startDate|date}} to
+                            {{endDate|date}}</span></span>
                 </div>
-                <span>
-                    has no activities
-                </span>
             </div>
+            <span>
+                 no activities
+            </span>
         </div>
 
     </ng-template>

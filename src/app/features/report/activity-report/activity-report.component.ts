@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ReportService } from '../../../core/report.service';
 import { ClassModel } from '../../../shared/models/class.model';
 import { FlattenedActivity } from '../../../shared/models/activity.model';
-import { debounceTime } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-activity-report',
   templateUrl: './activity-report.component.html',
   styleUrl: './activity-report.component.scss'
 })
-export class ActivityReportComponent implements OnInit {
+export class ActivityReportComponent implements OnInit, OnDestroy {
   classes: ClassModel[] = [];
   students!: string[];
   activities!: FlattenedActivity[];
   filterForm: FormGroup;
   tableData!: FlattenedActivity[];
+  minStartDate!: Date;
+  sub!: Subscription;
 
   constructor(private report: ReportService) {
     this.filterForm = new FormGroup({
@@ -30,10 +32,6 @@ export class ActivityReportComponent implements OnInit {
     return this.filterForm.value;
   }
 
-  get selectedStudents() {
-    return this.filterForm.value.selectedStudents;
-  }
-
   get startDate() {
     return this.filterForm.value.startDate;
   }
@@ -41,11 +39,17 @@ export class ActivityReportComponent implements OnInit {
     return this.filterForm.value.endDate;
   }
 
+  get listingStudents() {
+    console.log(this.filterForm.value.selectedStudents, this.filterFormValue.selectedClass.students);
+
+    return this.filterForm.value.selectedStudents ? this.filterForm.value.selectedStudents : this.filterFormValue.selectedClass.students;
+  }
+
   ngOnInit() {
     this.getStudents();
     this.getActivities();
 
-    this.filterForm.valueChanges.pipe(
+    this.sub = this.filterForm.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(value => {
       if (value.selectedClass) {
@@ -95,12 +99,13 @@ export class ActivityReportComponent implements OnInit {
       if (endDate) {
         includeActivity = includeActivity && (activity.week ? activity.week <= endDate : true);
       }
-      
+
       return includeActivity;
     });
   }
 
-
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 }
-
 

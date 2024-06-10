@@ -3,6 +3,7 @@ import { ApiService } from './api.service';
 import { firstValueFrom } from 'rxjs';
 import { Activity, FlattenedActivity } from '../shared/models/activity.model';
 import moment from 'moment';
+import { ClassModel } from '../shared/models/class.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,15 +14,16 @@ export class ReportService {
 
   async fetchClassData() {
     const url = `/matific-test-classes`;
-    const data = await firstValueFrom<any[]>(this.apiService.getRequest(url));
-    console.log(data);
+    const data = await firstValueFrom<ClassModel[]>(this.apiService.getRequest(url));
+    data.forEach(c => {
+      c.students.sort();
+    });
     return data;
   }
 
   async fetchActivityData() {
     const url = `/matific-test-activities`;
     const data = await firstValueFrom<Activity[]>(this.apiService.getRequest(url, true));
-    console.log(data);
     const flattenedData: FlattenedActivity[] = [];
     data.forEach(item => {
       const { id, content, student, skill, type, time: duration, attempts } = item;
@@ -39,9 +41,6 @@ export class ReportService {
         });
       });
     });
-
-    // return flattenedData;
-    console.log(flattenedData);
     return flattenedData;
   }
 }

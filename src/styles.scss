@@ -1,6 +1,7 @@
 // Import Bootstrap functions and variables
 $primary: #ff6000;
 $dark: #102837;
+$light-gray: #a6a6a6;
 $excellent-color: #6DCE01;
 $good-color: #FFCE00;
 $ok-color: #FF6100;
@@ -12,9 +13,41 @@ $weak-color: #FF3933;
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active {
-    color: #fff;
+    color: $white;
 }
 
+.p-calendar .p-button,
+.p-button:enabled:hover {
+    background: $white;
+    border: 1px solid $light-gray;
+    color: #333333;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: $primary;
+    border-color: $primary;
+}
+
+.data-table {
+
+    thead{
+        border: 1px solid $light-gray;
+
+    }
+    .p-datatable .p-datatable-tbody>tr {
+        border: 1px solid $light-gray;
+    }
+
+    .p-datatable .p-datatable-thead > tr > th{
+        border-left: none;
+        border-right: none;
+    }
+
+    .p-datatable .p-datatable-tbody>tr>td {
+        border: none
+    }
+
+}
 
 .auth-container {
     display: flex;
@@ -103,4 +136,14 @@ $weak-color: #FF3933;
 
 .text-weak {
     color: $weak-color;
+}
+
+
+.filter-contol {
+
+    .p-dropdown,
+    .p-multiselect,
+    .p-calendar {
+        width: 250px;
+    }
 }
