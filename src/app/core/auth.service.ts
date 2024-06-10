@@ -19,13 +19,17 @@ export class AuthService {
   registerUser(userData: User): boolean {
     try {
       const users = this.getUsers();
+      const userExists = users.some(user =>  user.username === userData.username);
+      if (userExists) {
+          return false;
+      }
       users.push(userData);
       localStorage.setItem(this.storageKey, JSON.stringify(users));
       this.state.setUser(userData);
       return true;
     } catch (err) {
       console.error('registerUser:', err);
-      return false;
+      throw err;
     }
   }
 
