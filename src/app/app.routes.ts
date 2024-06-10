@@ -7,7 +7,7 @@ export const routes: Routes = [
     {
         path: '',
         component: MainLayoutComponent,
-        // canActivate: [authGuard],
+        canActivate: [authGuard],
         loadChildren: () => import('./features/report/report.module').then(m => m.ReportModule)
     }
 ];

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, of } from 'rxjs';
 import { User } from '../../shared/models/user.model';
 
 @Injectable({
@@ -26,6 +26,10 @@ export class StateService {
   }
 
   get currentUser() {
-   return this.userState.getValue();
+    return this.userState.getValue();
+  }
+
+  userState$() {
+    return this.userState.asObservable();
   }
 }
