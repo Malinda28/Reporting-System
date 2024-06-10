@@ -12,9 +12,7 @@ export class UserRegistrationComponent {
   registrationForm!: FormGroup;
   isSubmitAttempt: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {
-
-  }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.registrationForm = new FormGroup({
@@ -32,8 +30,6 @@ export class UserRegistrationComponent {
       if (res) {
         this.router.navigate(['auth/login']);
       }
-    } else {
-      // Handle form validation errors
     }
   }
 
@@ -78,9 +74,6 @@ export class UserRegistrationComponent {
 
   get passwordValidation() {
     if (this.passwordControl.errors && (this.passwordControl.touched || this.isSubmitAttempt)) {
-      // if (this.passwordControl.errors['password']) {
-      //   return 'Please enter a valid email'
-      // }
       return 'Password is required';
     }
     return null;

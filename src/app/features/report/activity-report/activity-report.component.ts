@@ -53,8 +53,6 @@ export class ActivityReportComponent implements OnInit {
       }
       const students = (value.selectedStudents?.length) ? value.selectedStudents : value.selectedClass.students;
       this.tableData = this.filterActivities(students, value.startDate, value.endDate);
-      console.log(this.tableData);
-
     });
 
   }
@@ -82,8 +80,7 @@ export class ActivityReportComponent implements OnInit {
   }
 
   filterActivities(students?: string[], startDate?: Date, endDate?: Date): FlattenedActivity[] {
-    console.log(this.activities,students,startDate,endDate);
-    
+
     return this.activities.filter(activity => {
       let includeActivity = true;
 
@@ -98,7 +95,6 @@ export class ActivityReportComponent implements OnInit {
       if (endDate) {
         includeActivity = includeActivity && (activity.week ? activity.week <= endDate : true);
       }
-      console.log(includeActivity);
       
       return includeActivity;
     });
