@@ -4,9 +4,8 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
-import { MiddlewareService } from './core/middleware.service';
+
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), importProvidersFrom(BrowserAnimationsModule), provideHttpClient(),
-  { provide: HTTP_INTERCEPTORS, useClass: MiddlewareService, multi: true }]
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), importProvidersFrom(BrowserAnimationsModule), provideHttpClient()]
 };

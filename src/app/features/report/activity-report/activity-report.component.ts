@@ -11,7 +11,7 @@ import { debounceTime } from 'rxjs';
   styleUrl: './activity-report.component.scss'
 })
 export class ActivityReportComponent implements OnInit {
-  classes!: ClassModel[];
+  classes: ClassModel[] = [];
   students!: string[];
   activities!: FlattenedActivity[];
   filterForm: FormGroup;
@@ -40,6 +40,7 @@ export class ActivityReportComponent implements OnInit {
   get endDate() {
     return this.filterForm.value.endDate;
   }
+
   ngOnInit() {
     this.getStudents();
     this.getActivities();
@@ -51,7 +52,9 @@ export class ActivityReportComponent implements OnInit {
         this.students = value.selectedClass.students;
       }
       const students = (value.selectedStudents?.length) ? value.selectedStudents : value.selectedClass.students;
-      this.tableData = this.filterActivities(this.activities, students, value.startDate, value.endDate);
+      this.tableData = this.filterActivities(students, value.startDate, value.endDate);
+      console.log(this.tableData);
+
     });
 
   }
@@ -59,7 +62,6 @@ export class ActivityReportComponent implements OnInit {
   async getStudents() {
     this.classes = await this.report.fetchClassData();
     this.students = Array.from(new Set(this.classes.flatMap(cls => cls.students)));
-    this.students.push('malinda')
   }
 
   async getActivities() {
@@ -79,9 +81,10 @@ export class ActivityReportComponent implements OnInit {
     this.filterForm.controls['selectedStudents'].reset();
   }
 
-  filterActivities(activities: FlattenedActivity[], students?: string[], startDate?: Date, endDate?: Date): FlattenedActivity[] {
-
-    return activities.filter(activity => {
+  filterActivities(students?: string[], startDate?: Date, endDate?: Date): FlattenedActivity[] {
+    console.log(this.activities,students,startDate,endDate);
+    
+    return this.activities.filter(activity => {
       let includeActivity = true;
 
       if (students && students.length > 0) {
@@ -95,6 +98,8 @@ export class ActivityReportComponent implements OnInit {
       if (endDate) {
         includeActivity = includeActivity && (activity.week ? activity.week <= endDate : true);
       }
+      console.log(includeActivity);
+      
       return includeActivity;
     });
   }

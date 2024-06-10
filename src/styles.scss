@@ -27,6 +27,19 @@ $weak-color: #FF3933;
         padding: 15px;
         margin: auto;
     }
+
+    .p-message .p-message-wrapper {
+        padding: 10px;
+        font-size: 14px;
+
+        .p-message-close {
+            display: none;
+        }
+
+
+    }
+
+
 }
 
 .main-container {
